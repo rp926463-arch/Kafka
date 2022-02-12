@@ -1,0 +1,95 @@
+Download Kafka file
+https://drive.google.com/drive/folders/1rBauyUVCRTbnKXgkMGh4l9MdIOVj8CQc?usp=sharing
+
+extract zip File to C Drive
+C:/Kafka
+
+@@Change Below settings
+1)In .\config\server.properties
+log.dirs=C:/Kafka/kafka-logs
+
+2)In .\config\zookeeper.properties
+dataDir=C:/Kafka/zookeeper-data
+
+Done setting up server
+__________________________________________________________________________________________
+@@Start Zookeeper
+.\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
+
+@@Start KafkaServer
+.\bin\windows\kafka-server-start.bat .\config\server.properties
+
+@@Create Topic
+.\bin\windows\kafka-topics.bat --create --topic test-topic --bootstrap-server localhost:9092
+
+.\bin\windows\kafka-topics.bat --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic iotsimineuron
+
+
+@@Describe Topic
+.\bin\windows\kafka-topics.bat --describe --topic test-topic --bootstrap-server localhost:9092
+
+@@Use Console Producer
+.\bin\windows\kafka-console-producer.bat --topic test-topic --bootstrap-server localhost:9092
+
+.\bin\windows\kafka-console-producer.bat --bootstrap-server localhost:9092 --topic iotsimineuron < C:\Users\rosha\Downloads\GIT_Repos\Spark\Spark Kafka Projects\Spark Kafka Projects\IoT-Data-Processing-and-Analytics\testdata.txt
+
+
+pyspark --jars spark-streaming-kafka-0-8-assembly_2.11-2.4.7.jar  kafka-direct-iotmsg.py
+
+spark-submit --jars spark-streaming-kafka-0-8-assembly_2.11-2.4.7.jar kafka-direct-iotmsg.py
+
+@@use console Consumer
+.\bin\windows\kafka-console-consumer.bat --topic test-topic --from-beginning --bootstrap-server localhost:9092 --partition 0
+
+
+@@List Kafka Topics
+.\bin\windows\kafka-topics.bat --list --bootstrap-server localhost:9092
+
+
+@@Change retention policy of particular topic
+.\bin\windows\kafka-configs.bat --bootstrap-server localhost:9092 --alter --entity-type topics --add-config retention.ms=1000 --entity-name test-topic
+
+@@Check retention policy of particular topic
+.\bin\windows\kafka-configs.bat --bootstrap-server localhost:9092 --entity-type topics --describe --entity-name test-topic
+
+###if kafka-server stopped restart it & Do not forget to remove retention policy using below command
+
+@@Delete retention policy config
+.\bin\windows\kafka-configs.bat --bootstrap-server localhost:9092 --alter --entity-type topics --delete-config retention.ms --entity-name test-topic
+
+
+
+
+Sometimes, you may need to collect data from any existing relational databases or messaging system into Kafka. To achieve this, you can use Kafka Connect. Kafka connect is a tool that helps to stream data reliably and durably between Kafka and other external systems. Kafka Connect can collect data continuously from any external systems into Kafka and vice versa.
+
+_____________________________________________________________________________________________
+Q.if Consumer not receiving messages, from kafka Producer console -> add --partition 0 at end
+
+.\bin\windows\kafka-console-consumer.bat --topic test-topic --from-beginning --bootstrap-server localhost:9092 --partition 0
+_____________________________________________________________________________________________
+Q.Kafka QuickStart
+https://kafka.apache.org/quickstart
+_____________________________________________________________________________________________
+
+
+Info:::
+Default settings
+--Kafka server running on the port “9092” with the settings specified in the “server.properties” configuration file.
+--ZooKeeper will be running on port “2181” with the settings specified in the “zookeeper.properties” configuration file.
+
+
+
+
+bydefault kafka will store data for 2 weeks
+
+https://github.com/Avnish327030/spark_project
+
+avinash@ineuron.ai
+
+point your mongoDB atlas account
+
+export HADOOP_HOME=/home/hdoop/Downloads/hadoop-3.2.1
+export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+
+export VAR=path
+ export PATH=$PATH:/bin
